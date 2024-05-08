@@ -33,3 +33,29 @@ const productSchema = new Schema(
 );
 
 module.exports = mongoose.model("Data", productSchema);
+
+const cartItemSchema = new Schema(
+    {
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: "Product",
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        quantity: {
+            type: Number,
+            default: 1,
+            required: true,
+        },
+        totalBill: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+    },
+    { timestamps: true }
+);
+
+module.exports = mongoose.model("cartItem", cartItemSchema);

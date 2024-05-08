@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const products = require("./data/dataSeeder");
-const Data = require("./models/data");
 require("dotenv").config();
 
 const dataRoutes = require("./routes/data");
@@ -24,16 +22,14 @@ app.use((req, res, next) => {
     next();
 });
 
-//populate the database
-// Data.create(products)
-//     .then((createdProducts) => {
-//         console.log("Products created:", createdProducts);
-//     })
-//     .catch((error) => {
-//         console.error("Error creating products:", error);
-//     });
-
 app.use("/v1", dataRoutes);
+
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    res.status(status).json({ message: message });
+});
 
 mongoose
     .connect(
